@@ -3,3 +3,33 @@ return render(request, 'name of template.html') (provided that templates folder 
 
 TAKEAWAY #2: SERVE STATIC FILES IN DEVELOPMENT!
 JUST HAVE A STATIC FOLDER INSIDE YOUR APP WITH THE NESSECARY FILES!
+
+TAKEAWAY #3: DATABASES - SETUP
+1. GO TO MODELS.PY OF THE APP, MAKE CLASSES FOR EACH THING YOU WANT TO STORE
+2. ALL DATA IN CLASSES MUST BE SOME TYPE OF DATA FIELD. EG. CHARFIELD, INTEGERFIELD
+3. WHEN DONE SETTING EVERYTHING UP, RUN MAKEMIGRATIONS AND MIGRATE
+4. TO ADD DATA MANUALLY, run manage.py with python then import the model you want to make
+   make objects with that model's blueprint then save the object
+   >>> from connect4.models import Player
+   >>> p1 = Player(name='bob', wins=0)
+   >>> p1.save()
+
+TAKEAWAY #4.1: DATABASES - MAKING A POST REQUEST TO CHANGE DATABASE
+1. Use the fetch API, and override the method, request body (contains data to send to server), headers (inform server what is being recieved)
+1.1. After the server processes the request and returns something, fetch works the same way as GET requests
+
+***REMEMBER TO STRINGIFY the request body, as this is how the servers communicate (not JSON)***
+
+fetch('url to fetch', {
+   method: 'POST', 
+   body: JSON.stringify({
+      'deez nuts': 10
+   }), 
+   headers: {
+      'content-type': 'application/json'
+   }
+}).then(
+   res => res.json()
+).then(
+   data => console.log(data)
+);
