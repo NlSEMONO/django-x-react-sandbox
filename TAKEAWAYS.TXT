@@ -1,0 +1,5 @@
+TAKEAWAY #1: RENDER TEMPLATE
+return render(request, 'name of template.html') (provided that templates folder exists in same directory)
+
+TAKEAWAY #2: SERVE STATIC FILES IN DEVELOPMENT!
+JUST HAVE A STATIC FOLDER INSIDE YOUR APP WITH THE NESSECARY FILES!
