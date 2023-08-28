@@ -33,3 +33,10 @@ fetch('url to fetch', {
 ).then(
    data => console.log(data)
 );
+
+TAKEAWAY #4.2: DATABASE QUERIES
+1. import the model into the views file, where the server requests are handled
+2. Use .filter(), .exclude(), .all(), .get(), to obtain the entry that you want to modify
+2.1. Note that all except .get() return a QuerySet, so you still need to pick what in the QuerySet you want to modify (using indicies)
+3. Use .save() to update the entry in the database (you can also do this to create new entries)
+4. .delete() exists to remove all elements of a QuerySet
