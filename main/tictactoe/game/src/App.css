@@ -1,0 +1,14 @@
+#root {
+  text-align: center;
+}
+
+.square {
+  background-color: white;
+  height: 48px;
+  width: 48px;
+}
+
+.squareRow {
+  height: 48px;
+  text-align: center;
+}
