@@ -10,7 +10,7 @@ function App() {
   const [status, setStatus] = useState('X Turn');
   const [winner, setWinner] = useState('');
   const [stats, setStats] = useState(Array(2).fill(0));
-  const [gameId, setGameId] = useState(0);
+  const [gameId, setGameId] = useState(-1);
   const [showEndOptions, setShowEndOptions] = useState(false);
   const gameDoneElements = [];
   const userGrid = [];
@@ -31,7 +31,7 @@ function App() {
     fetch('get-stats', {
       method: 'POST', 
       body: JSON.stringify({
-        'winner': winner
+        'winner': winner === 'NONE' ? '' : winner
       }),
       headers: {
         'content-type': 'application/json'
@@ -47,30 +47,30 @@ function App() {
 
   function handleClick(i) {
     // block invalid inputs
-    if (winner !== '' || board[i]) {
+    if (winner !== '' || board[i] || status === 'O Turn') {
       return;
     }
     // if valid input, make the request to DB
     const options = {
       method: "POST", 
       body: JSON.stringify({
-        'move': i
+        'move': i, 
+        'id': gameId
       }), 
       headers: {
         'content-type': 'application/json'
       },
       keepalive: false,
     };
-    console.log(options);
     fetch('player-move', options).then(
       res => res.json()
     ).then(
       data => {
-        console.log('bruh');
+        if (gameId === -1) setGameId(data['id']); 
         let newBoard = cloneBoard(board);
         newBoard[i] = 'X';
         setBoard(newBoard);
-        setStatus('O move');
+        setStatus('O Turn');
         if (data['winner']==='X') {
           setStatus('X Wins!'); 
           setWinner('X');
@@ -81,11 +81,12 @@ function App() {
         setTimeout(() => {
           if (data['move']===-2) {
             setStatus("Tie Game!");
+            setWinner('NONE');
             return;
           }
           if (data['move']>-1) newBoard[data['move']] = 'O';
           setWinner(data['winner']);
-          setStatus('X Move');
+          setStatus('X Turn');
           setBoard(newBoard);
           if (data['winner']==='O') setStatus('O Wins!'); 
         }, 1000);
@@ -111,11 +112,16 @@ function App() {
     setStatus('X Turn');
     setBoard(Array(9).fill(''));
     setShowEndOptions(false);
-    fetch('new-game');
+    fetch('new-game', {
+      method: "POST",
+      body: JSON.stringify({
+        'id': gameId
+      })
+    });
   }}> Play again </button> <br/> </>);
   gameDoneElements.push(<div className={showEndOptions ? '' : 'invis'}>
-    <h1> {`X Lifetime wins ${stats[0]}`}</h1>
-    <h1> {`O Lifetime wins ${stats[1]}`}</h1>
+    <h1> {`X Lifetime wins: ${stats[0]}`}</h1>
+    <h1> {`O Lifetime wins: ${stats[1]}`}</h1>
   </div>);
 
   return (

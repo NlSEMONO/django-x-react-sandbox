@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from .models import TicTacToePlayer
@@ -10,12 +10,15 @@ def index(request):
     return render(request, 'ttt-index.html')
 
 
-board = ['' for i in range(0, 9)]
+GAMES = {}
 @csrf_exempt
 def move(request):
     data = request.body.decode('utf-8')
     data = json.loads(data)
-    print(data['move'])
+    id = _generate_gameid() if data['id'] == -1 else data['id']
+    if id not in GAMES: 
+        GAMES[id] = ['' for _ in range(0, 9)]
+    board = GAMES[id]
     board[data['move']] = 'X'
     possible_squares = [i for i in range(0, 9) if board[i] == '']
     winner = _check_winner(board)
@@ -28,13 +31,16 @@ def move(request):
         else:
             selection = -2
             
-    return JsonResponse({'move': selection, 'winner': winner})
+    return JsonResponse({'move': selection, 'winner': winner, 'id': id})
 
 
 # new-game
 @csrf_exempt
-def new_game(request):
-    board = ['' for i in range(0, 9)]
+def remove_game(request):
+    data = request.body.decode('utf-8')
+    data = json.loads(data)
+    GAMES.pop(data['id'])
+    return HttpResponse('Sucessfully removed!')
 
 # get-stats
 @csrf_exempt
@@ -72,3 +78,9 @@ def _check_winner(board):
         if board[seq[0]] == board[seq[1]] == board[seq[2]] != '':
             return board[seq[0]]
     return ''
+
+def _generate_gameid():
+    number = random.randint(0, 1000000)
+    while number in GAMES: 
+        number = random.randint(0, 1000000)
+    return number
