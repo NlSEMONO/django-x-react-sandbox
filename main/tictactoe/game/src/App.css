@@ -6,9 +6,22 @@
   background-color: white;
   height: 48px;
   width: 48px;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .squareRow {
+  display: flex;
   height: 48px;
   text-align: center;
+}
+
+#game {
+  text-align: center;
+  margin: auto;
+  width: fit-content;
+}
+
+.invis {
+  display: none;
 }
