@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<script src="/static/js/login.js"></script>
+<body>
+    <div style="text-align: center;"> 
+        <form id='loginForm' action='/tictactoe/' method='POST' onsubmit='return login()'> 
+            <h1> Enter Username: </h1> <br/>
+            <input id='username' type='text' required> </input><br/><br/>
+            <input type='submit' id='submit' value="Login"> </input> 
+            <button onClick='playGuest()'> Play as Guest </button> 
+        </form>
+    </div>
+</body>
+</html>

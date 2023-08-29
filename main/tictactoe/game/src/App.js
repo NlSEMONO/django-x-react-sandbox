@@ -7,13 +7,18 @@ function Square({handleClick, value}) {
 
 function App() {
   const [board, setBoard] = useState(Array(9).fill(''));
-  const [status, setStatus] = useState('X Turn');
+  const playerName = localStorage.getItem('username') === 'Guest' ? 'X' : localStorage.getItem('username');
+  const [status, setStatus] = useState(`${playerName} Turn`);
   const [winner, setWinner] = useState('');
   const [stats, setStats] = useState(Array(2).fill(0));
   const [gameId, setGameId] = useState(-1);
   const [showEndOptions, setShowEndOptions] = useState(false);
   const gameDoneElements = [];
   const userGrid = [];
+
+  useEffect(() => {
+    if (playerName==='' || playerName === null) window.location.href='login';
+  }, [])
 
   function cloneBoard(givenBoard) {
     let newBoard = [];
@@ -31,7 +36,8 @@ function App() {
     fetch('get-stats', {
       method: 'POST', 
       body: JSON.stringify({
-        'winner': winner === 'NONE' ? '' : winner
+        'winner': winner === 'NONE' ? '' : winner,
+        'p1': playerName,
       }),
       headers: {
         'content-type': 'application/json'
@@ -40,7 +46,7 @@ function App() {
       (res) => res.json()
     ).then(
       (data) => {
-        setStats([data['X'], data['O']]);
+        setStats([data[playerName], data['O']]);
       }
     );
   }, [winner]);
@@ -72,8 +78,8 @@ function App() {
         setBoard(newBoard);
         setStatus('O Turn');
         if (data['winner']==='X') {
-          setStatus('X Wins!'); 
-          setWinner('X');
+          setStatus(`${playerName} Wins!`); 
+          setWinner(`${playerName}`);
           return;
         }
 
@@ -86,7 +92,7 @@ function App() {
           }
           if (data['move']>-1) newBoard[data['move']] = 'O';
           setWinner(data['winner']);
-          setStatus('X Turn');
+          setStatus(`${playerName} Turn`);
           setBoard(newBoard);
           if (data['winner']==='O') setStatus('O Wins!'); 
         }, 1000);
@@ -120,7 +126,7 @@ function App() {
     });
   }}> Play again </button> <br/> </>);
   gameDoneElements.push(<div className={showEndOptions ? '' : 'invis'}>
-    <h1> {`X Lifetime wins: ${stats[0]}`}</h1>
+    <h1> {`${playerName} Lifetime wins: ${stats[0]}`}</h1>
     <h1> {`O Lifetime wins: ${stats[1]}`}</h1>
   </div>);
 

@@ -6,9 +6,13 @@ import json
 import random
 
 # Create your views here.
+@csrf_exempt
 def index(request): 
     return render(request, 'ttt-index.html')
 
+@csrf_exempt
+def login(request):
+    return render(request, 'ttt-login.html')
 
 GAMES = {}
 @csrf_exempt
