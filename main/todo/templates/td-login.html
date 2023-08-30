@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<script src='/static/js/td-login.js'></script>
+<body> 
+    <form name='login' action='/todo/' style='text-align:center' onsubmit="checkValid(); return false;">
+        <h1> Enter Username: </h1>
+        <input type='text' id='user' required> <br/><br/>
+        <h1> Enter Password: </h1>
+        <input type="text" id='pw' required> <br/>
+        <input type="submit" value="Login"> 
+        <input type="button" onclick="signup()" value="Sign up"> 
+    </form>
+</body> 
+</html>

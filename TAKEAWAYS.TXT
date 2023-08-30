@@ -40,3 +40,9 @@ TAKEAWAY #4.2: DATABASE QUERIES
 2.1. Note that all except .get() return a QuerySet, so you still need to pick what in the QuerySet you want to modify (using indicies)
 3. Use .save() to update the entry in the database (you can also do this to create new entries)
 4. .delete() exists to remove all elements of a QuerySet
+
+TAKEAWAY #5: FORMS DON'T WAIT FOR PROMISES
+- to fix, return false on onsubmit and submit the form manually if the promise goes well
+
+TAKEAWAY #6: ForeignKey and OneToOneField
+- take in another class the field is being mapped to and on_delete parameter
