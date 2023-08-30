@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('connect4/', include('connect4.urls')),
     path('tictactoe/', include('tictactoe.urls')),
+    path('todo/', include('todo.urls'))
 ] 
