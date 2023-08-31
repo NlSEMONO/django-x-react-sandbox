@@ -34,6 +34,11 @@ def verify_login(request):
     session = _generate_hash(random.randint(0, 9))
     while len(Session.objects.filter(key=session)) > 0:
         session = _generate_hash(random.randint(0, 9))
+
+    # remove user's previous sessions
+    old_sessions = Session.objects.filter(user=possible_users[0])
+    old_sessions.delete()
+
     # put session in database
     s = Session(key=session, user=possible_users[0])
     s.save()
@@ -59,4 +64,3 @@ def verify_signup(request):
 
 def sign_up(request):
     return render(request, 'td-sign-up.html')
-

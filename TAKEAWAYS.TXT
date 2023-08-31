@@ -43,6 +43,7 @@ TAKEAWAY #4.2: DATABASE QUERIES
 
 TAKEAWAY #5: FORMS DON'T WAIT FOR PROMISES
 - to fix, return false on onsubmit and submit the form manually if the promise goes well
+- to generalize, think about putting more JS in html as an option
 
 TAKEAWAY #6: ForeignKey and OneToOneField
 - take in another class the field is being mapped to and on_delete parameter

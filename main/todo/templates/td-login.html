@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <script src='/static/js/td-login.js'></script>
-<body> 
+<body onload="checkLoggedIn()"> 
     <form name='login' action='/todo/' style='text-align:center' onsubmit="checkValid(); return false;">
         <h1> Enter Username: </h1>
         <input type='text' id='user' required> <br/><br/>

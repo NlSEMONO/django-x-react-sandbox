@@ -22,7 +22,9 @@ async function checkValid() {
                     console.log("USERNAME IS TAKEN");
                     resolve(false);
                 }
-                document.cookie += `;SS: ${data['SS']};`;
+                date = new Date();
+                date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
+                document.cookie = `SS=${data['SS']};${date};path=/;SameSite=secure`;
                 console.log(document.cookie);
                 resolve(true);
             }
