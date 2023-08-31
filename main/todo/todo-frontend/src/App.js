@@ -4,7 +4,7 @@ import './App.css';
 function StickyNote({handleClick, task, content}) {
   return (
     <div className='note' onClick={handleClick}> 
-      <h1> {task} </h1>
+      <h3> {task} </h3>
       <p> {content} </p>
     </div>
   );
@@ -34,11 +34,11 @@ function App() {
     ).then(
       data => {
         updateTasks(data['tasks']);
+        console.log('hi');
       }
     ).catch(
       err => {
-        window.alert('An error occured please login again.')
-        window.alert(err);
+        window.alert('An error occured please login again.');
         window.location.href = '/todo/login';
         setSS('', true);
       }
@@ -46,18 +46,34 @@ function App() {
   }, []);
 
   function handleClick(task) {
-    console.log(`${task} hi`);
+    fetch('remove-task', {
+      method: 'POST', 
+      body: JSON.stringify({
+        'SS': getSS(),
+        'task': tasks[task]['task'], 
+        'content': tasks[task]['content']
+      }), 
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(
+      res => res.json()
+    ).then(
+      data => {
+        updateTasks(data['tasks'])
+      }
+    )
   }
   
   for (let item in tasks) {
     notes.push(
-      <StickyNote handleClick={() => handleClick(item)} task={tasks[item]['tasks']} content={tasks[item]['content']}/>
+      <StickyNote handleClick={() => handleClick(item)} task={tasks[item]['task']} content={tasks[item]['content']}/>
     );
   }
 
   function addTask() {
-    let task = window.alert('Enter the name of the task');
-    let content = window.alert('Write some notes about the task');
+    let task = window.prompt('Enter the name of the task');
+    let content = window.prompt('Write some notes about the task');
     fetch('add-task', {
       method: 'POST', 
       body: JSON.stringify({
@@ -77,16 +93,6 @@ function App() {
     )
   }
 
-  return (
-    <> 
-      <h1 style='text-align:center;'> {`My Tasks`} </h1>
-      <div className='main'> 
-        {notes}
-      </div>
-      <button onClick={() => {addTask()}}> </button>
-    </>
-  );
-
   function updateTasks(data) {
     let allTasks = {};
     for (let task in data) {
@@ -94,6 +100,22 @@ function App() {
     }
     setTasks(allTasks);
   }
+  
+  function logOut() {
+    setSS('', true);
+    window.location.href = '/todo/login';
+  }
+
+  return (
+    <> 
+      <h1> {`My Tasks`} </h1>
+      <div className='main'> 
+        {notes}
+      </div> <br/>
+      <button onClick={() => {addTask()}}> Add Task </button>
+      <button onClick={() => {logOut()}}> Log Out</button>
+    </>
+  );
 }
 
 function setSS(newValue, expired=false) {

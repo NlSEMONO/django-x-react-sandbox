@@ -96,3 +96,8 @@ def add_task(request):
 def remove_task(request):
     data = request.body.decode('utf-8')
     data = json.loads(data)
+    user = Session.objects.filter(key=data['SS'])[0].user
+    task = Task.objects.filter(name=data['task'], content=data['content'], user=user)[0]
+    task.delete()
+
+    return JsonResponse({'tasks': {task.name: task.content for task in Task.objects.filter(user=user)}})

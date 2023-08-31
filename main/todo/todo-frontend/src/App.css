@@ -3,7 +3,8 @@
   text-align: center;
   height: 144px;
   width: 144px;
-  margin: 96px;
+  margin-left: 48px;
+  margin-right: 48px;
 }
 
 #root{
