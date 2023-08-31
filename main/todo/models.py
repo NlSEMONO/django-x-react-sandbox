@@ -17,8 +17,14 @@ class Session(models.Model):
     )
     expiry = models.DateTimeField(default=(datetime.now() + timedelta(weeks=1)))
 
-# class Task(models.Model):
-#     name = models.CharField(max_length=128)
-#     content = models.CharField(max_length=128)
-#     user = models.ForeignKey()
+    def __str__(self):
+        return f'{self.key}'
+
+class Task(models.Model):
+    name = models.CharField(max_length=128)
+    content = models.CharField(max_length=128)
+    user = models.ForeignKey(
+        TodoUser, 
+        on_delete=models.CASCADE
+    )
 

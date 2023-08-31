@@ -1,11 +1,12 @@
+import {getSS, setSS} from './ss.js' 
+
 function signup() {
     window.location.href = "/todo/sign-up";
 }
 
-function checkLoggedIn() {
+async function checkLoggedIn() {
     // how to read cookies:
     let SS = getSS();
-    console.log(SS);
     if (SS !== '') {
         // everything after this line is useless code, as we don't know who the user is before submitting the login
         window.location.href = '/todo';
@@ -70,31 +71,4 @@ async function checkValid() {
     let result = await bad;
     if (!result) return;
     form.submit();
-}
-
-function setSS(newValue, expired=false) {
-    let date = new Date();
-    date.setTime(date.getTime() + (expired ? (7 * 24 * 60 * 60 * 1000 * -1) : (7 * 24 * 60 * 60 * 1000))); 
-    document.cookie = `SS=${newValue};${date};path=/;SameSite=secure`;
-    console.log(document.cookie);
-}
-
-function getSS() {
-    let name = 'SS='; 
-    console.log(document.cookie);
-    let allCookies = document.cookie.split(';');
-    let bestSoFar = '';
-    for (let i=0;i<allCookies.length; i++) {
-        let c = allCookies[i];
-        // remove whitespace
-        if (c.charAt(0) === ' ') {
-            c = c.substring(1);
-        }
-        // if cookie name matches the name we're looking for
-        if (c.substring(0,name.length) === name) {
-            let currentSS = c.substring(name.length, c.length);
-            bestSoFar = currentSS.length > bestSoFar.length ? currentSS : bestSoFar;
-        }
-    }
-    return bestSoFar;
 }

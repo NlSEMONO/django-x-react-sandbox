@@ -1,14 +1,14 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 from typing import Optional
 from django.shortcuts import render
-from .models import Session, TodoUser
+from .models import Session, TodoUser, Task
 from django.views.decorators.csrf import csrf_exempt
 import random
 import json
 
 def _generate_hash(num: int):  
     if num > 1000000:
-        return hash(str(num))
+        return str(hash(str(num)))
     else: 
         return _generate_hash(int(str(num) + str(random.randint(0, 9))))
 
@@ -64,3 +64,35 @@ def verify_signup(request):
 
 def sign_up(request):
     return render(request, 'td-sign-up.html')
+
+@csrf_exempt
+def get_tasks(request):
+    data = request.body.decode('utf-8')
+    data = json.loads(data)
+
+    print(data['SS'])
+    print(Session.objects.all())
+    session = Session.objects.filter(key=data['SS'])
+    if len(session) == 0: 
+        return HttpResponseBadRequest(JsonResponse({
+            'error': 'An error occured. Please login again.'
+        }))
+    user = session[0].user
+    tasks = {task.name: task.content for task in Task.objects.filter(user=user)}
+    return JsonResponse({'tasks': tasks})
+    
+@csrf_exempt
+def add_task(request):
+    data = request.body.decode('utf-8')
+    data = json.loads(data)
+
+    user = Session.objects.filter(key=data['SS'])[0].user
+    task = Task(name=data['task'], content=data['content'], user=user)
+    task.save()
+
+    return JsonResponse({'tasks': {task.name: task.content for task in Task.objects.filter(user=user)}})
+
+@csrf_exempt
+def remove_task(request):
+    data = request.body.decode('utf-8')
+    data = json.loads(data)

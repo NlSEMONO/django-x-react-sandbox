@@ -1,4 +1,3 @@
-
 function setSS(newValue, expired=false) {
     let date = new Date();
     date.setTime(date.getTime() + (expired ? (7 * 24 * 60 * 60 * 1000 * -1) : (7 * 24 * 60 * 60 * 1000))); 

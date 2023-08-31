@@ -1,6 +1,4 @@
 import {useState, useEffect} from 'react';
-import {setSS, getSS} from '/static/js/ss.js'
-
 import './App.css';
 
 function StickyNote({handleClick, task, content}) {
@@ -14,14 +12,15 @@ function StickyNote({handleClick, task, content}) {
 
 function App() {
   const [tasks, setTasks] = useState([]);
-  const [username, setUsername] = useState('');
   const notes = [];
 
   // retrieve user data onload
   useEffect(() => {
     let SS = getSS();
-    if (SS === '') window.location.href = '/todo/login';
-
+    if (SS === '') {
+      window.location.href = '/todo/login';
+      return;
+    }
     fetch('get-tasks', {
       method: 'POST', 
       body: JSON.stringify({
@@ -34,17 +33,20 @@ function App() {
       res => res.json()
     ).then(
       data => {
-        setUsername(data['username']);
-        let allTasks = data['tasks'].map((task) => {
-          return {'task': task, 'content': data['tasks'][task]}
-        }); 
-        setTasks(allTasks);
+        updateTasks(data['tasks']);
+      }
+    ).catch(
+      err => {
+        window.alert('An error occured please login again.')
+        window.alert(err);
+        window.location.href = '/todo/login';
+        setSS('', true);
       }
     )
   }, []);
 
   function handleClick(task) {
-
+    console.log(`${task} hi`);
   }
   
   for (let item in tasks) {
@@ -53,14 +55,72 @@ function App() {
     );
   }
 
+  function addTask() {
+    let task = window.alert('Enter the name of the task');
+    let content = window.alert('Write some notes about the task');
+    fetch('add-task', {
+      method: 'POST', 
+      body: JSON.stringify({
+        'task': task, 
+        'content': content, 
+        'SS': getSS()
+      }), 
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(
+      res => res.json()
+    ).then(
+      data => {
+        updateTasks(data['tasks']);
+      }
+    )
+  }
+
   return (
     <> 
-      <h1> {`${username}'s Tasks`} </h1>
+      <h1 style='text-align:center;'> {`My Tasks`} </h1>
       <div className='main'> 
         {notes}
       </div>
+      <button onClick={() => {addTask()}}> </button>
     </>
   );
+
+  function updateTasks(data) {
+    let allTasks = {};
+    for (let task in data) {
+      allTasks[task] = {'task': task, 'content': data[task]}
+    }
+    setTasks(allTasks);
+  }
+}
+
+function setSS(newValue, expired=false) {
+  let date = new Date();
+  date.setTime(date.getTime() + (expired ? (7 * 24 * 60 * 60 * 1000 * -1) : (7 * 24 * 60 * 60 * 1000))); 
+  document.cookie = `SS=${newValue};${date};path=/;SameSite=secure`;
+  console.log(document.cookie);
+}
+
+function getSS() {
+  let name = 'SS='; 
+  console.log(document.cookie);
+  let allCookies = document.cookie.split(';');
+  let bestSoFar = '';
+  for (let i=0;i<allCookies.length; i++) {
+      let c = allCookies[i];
+      // remove whitespace
+      if (c.charAt(0) === ' ') {
+          c = c.substring(1);
+      }
+      // if cookie name matches the name we're looking for
+      if (c.substring(0,name.length) === name) {
+          let currentSS = c.substring(name.length, c.length);
+          bestSoFar = currentSS.length > bestSoFar.length ? currentSS : bestSoFar;
+      }
+  }
+  return bestSoFar;
 }
 
 export default App;
