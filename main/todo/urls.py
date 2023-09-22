@@ -9,5 +9,6 @@ urlpatterns = [
     path('login/verify-signup', views.verify_signup),
     path('get-tasks', views.get_tasks), 
     path('add-task', views.add_task),
-    path('remove-task', views.remove_task)
+    path('remove-task', views.remove_task),
+    path('edit-task', views.edit_task),
 ]

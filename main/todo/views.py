@@ -79,6 +79,7 @@ def get_tasks(request):
         }))
     user = session[0].user
     tasks = {task.name: task.content for task in Task.objects.filter(user=user)}
+    print(tasks)
     return JsonResponse({'tasks': tasks})
     
 @csrf_exempt
@@ -91,6 +92,20 @@ def add_task(request):
     task.save()
 
     return JsonResponse({'tasks': {task.name: task.content for task in Task.objects.filter(user=user)}})
+
+@csrf_exempt
+def edit_task(request):
+    data = request.body.decode('utf-8')
+    data = json.loads(data)
+
+    user = Session.objects.filter(key=data['SS'])[0].user
+    task = Task.objects.filter(name=data['task'], content=data['content'], user=user)[0]
+    task.name = data['new_task']
+    task.content = data['new_content']
+    task.save()
+
+    return JsonResponse({'tasks': {task.name: task.content for task in Task.objects.filter(user=user)}})
+
 
 @csrf_exempt
 def remove_task(request):
