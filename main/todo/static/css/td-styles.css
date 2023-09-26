@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Offside&family=Orbitron&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital@0;1&display=swap');
+
+a {
+    text-decoration: none;
+    color: #A3CDFC;
+}
+
+body {
+    font-family: 'Offside', sans-serif;
+    color: #A3CDFC; 
+    background: #5696CB;  
+    margin: 0px;
+}
+
+h1 {
+    font-size: 48px;
+    margin: 0px;
+    padding-top: 50px;
+}
+
+p {
+    font-family: 'Lora';
+    font-size: 32px;
+}
+
+.main-border {
+    border-color: #A3CDFC;
+    border: 1;
+    border-style: solid;
+}
+
+.secondary-back {
+    background-color: #D9D9D9;
+}
+
+.tb {
+    height: 50px;
+    font-size: 28px;
+}
+
+#sidebar p, #navbar-items p {
+    font-family: 'Offside';
+}
+
+#sidebar p {
+    padding-top: 12px;
+}
+
+#sidebar {
+    display: none;
+    position: fixed;
+    z-index: 4;
+    /* top:0; */
+    right:0;
+    height: 100%;
+    width: 30%;
+    text-align:center;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #5E9FD5;
+}
+
+#navbar {
+    position: sticky;
+    top: 0px;
+    background-color: #5E9FD5;
+    height: 90px;
+    z-index: 2;
+}
+
+#navbar-pages {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    width: 300px;
+}
+
+#navbar-items {
+    padding-left: 15px;
+    padding-right: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
+}
+
+#logo-container {
+    width: 225px;
+}
+
+#website-logo, #burger {
+    width: 60px;
+    height: 60px;
+}
+
+#burger {
+    display: none;
+    z-index:5;
+}
+
+.logo {
+    height: 45px;
+    width: 45px;
+}
+
+.item-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.text-container {
+    margin-left: 10%;
+}
+
+.general-container {
+    padding-top: 100px;
+}
+
+.btn {
+    font-family: 'Offside';
+    border: 1;
+    border-style:solid;
+    border-radius: 5%;
+    font-size: 14px;
+    width: 90px;
+    height: 45px;
+}
+
+.contrast {
+    color: #FFCC86; 
+}
+
+.contrast-back {
+    background-color: #FFCC86; 
+}
+
+.main {
+    color: #A3CDFC;  
+}
+
+.main-back {
+    background-color: #5696CB; 
+}
+
+.main-text {
+    color: #5696CB;  
+}
+
+.secondary-back {
+    background-color: #D9D9D9;
+}
+
+.centre {
+    text-align: center;
+}
+
+@media only screen and (max-width: 720px) {
+    .text-container {
+        margin-left: 15%;
+    }
+    h1 {
+        font-size: 45px;
+        margin: 0px;
+    }
+
+    .tb {
+        height: 46px;
+        font-size: 25px;
+    }
+    
+    p, ul, li {
+        font-family: 'Lora';
+        font-size: 24px;
+    }
+
+    #welcome {
+        display: flex;
+        flex-direction: column;
+        height: 80%;
+        justify-content: center;
+    }
+
+    #triangle {
+        display: block;
+        margin: 0px;
+        width:100%;
+    }
+
+    #blurb {
+        width: 384px;
+    }
+
+    .logo {
+        height: 38px;
+        width: 38px;
+    }
+
+    .btn {
+        font-family: 'Offside';
+        border: 1;
+        border-style:solid;
+        border-radius: 5%;
+        font-size: 15px;
+        width: 75px;
+        height: 38px;
+    }
+
+    #navbar {
+        height: 75px;
+    }
+    
+    #navbar-items {
+        height: 75px;
+    }
+    #img {
+        display: none;
+    }
+
+    #burger {
+        display: block;
+    }
+
+    #navbar-pages {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 540px) {
+    .text-container {
+        margin-left: 15%;
+    }
+    h1 {
+        font-size: 30px;
+    }
+
+    .tb {
+        height: 32px;
+        font-size: 16px;
+    }
+    
+    p, ul, li {
+        font-size: 16px;
+    }
+
+    #welcome {
+        height: 80%;
+    }
+
+    #blurb {
+        width: 256px;
+    }
+
+    .logo {
+        height: 30px;
+        width: 30px;
+    }
+
+    #logo-container {
+        width: 150px;
+    }
+
+    .btn {
+        font-size: 12px;
+        width: 60px;
+        height: 30px;
+    }
+
+    #website-logo, #burger {
+        width: 40px;
+        height: 40px;
+    }
+
+    #navbar {
+        height: 60px;
+    }
+    
+    #navbar-items {
+        height: 60px;
+    }
+}

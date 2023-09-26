@@ -98,3 +98,37 @@ function getSS() {
     }
     return bestSoFar;
 }
+
+var timeout = false;
+
+function toggleSidebar(){
+    if (timeout) return;
+    let sidebar = document.getElementById("sidebar");
+    console.log(sidebar.style.display);
+    if (sidebar.style.display == "") {
+        sidebar.style.display = "flex";
+        toggleOpaque(true);
+        console.log(sidebar.style.opacity);
+        console.log('hi1');
+    }
+    else {
+        sidebar.style.display = "";
+        toggleOpaque(false);
+        console.log('hi2');
+
+    }
+    timeout = true;
+    setTimeout(() => {timeout = false}, 100)
+}
+
+function toggleOpaque(dim) {
+    let main = document.getElementById("main");
+    if (!dim) {
+        main.style.opacity = "100%";
+        // navbar.style.opacity = "100%";
+    }
+    else {
+        main.style.opacity = "40%";
+        // navbar.style.opacity = "40%";
+    }
+}
